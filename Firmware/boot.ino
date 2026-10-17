@@ -9,7 +9,8 @@ bool isEEPROMvalid() {
   return ((byte1 == sig0) && (byte2 == sig1) && (byte3 == sig2));
 }
 
-void formatFactory() {
+void formatFactory() 
+{
   //default triggerPreset
   EEPROM.update(addr, 0x1);
   
@@ -20,7 +21,8 @@ void formatFactory() {
 }
 
 //trigger length presets (ms)
-void loadPreset() {
+void loadPreset() 
+{
   trigPreset = EEPROM.read(addr);
     switch(trigPreset) {
       case 0:

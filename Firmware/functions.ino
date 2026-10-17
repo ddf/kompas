@@ -18,7 +18,7 @@ void generateArray0() {
 void generateArray1() {
   if(generate1) {
     for(int i=0; i<length1; i++) {
-      randomArray1[i] = random(1011);
+      randomArray1[i] = random(T-1);
       //Serial.print(randomArray1[i]);      
     } 
     lastGenerate1 = millis();
@@ -30,7 +30,7 @@ void generateArray1() {
 void generateArray2() {
   if(generate2) {
     for(int i=0; i<length2; i++) {
-      randomArray2[i] = random(1011);
+      randomArray2[i] = random(T-1);
       //Serial.print(randomArray2[i]);      
     } 
     lastGenerate2 = millis();
@@ -42,16 +42,27 @@ void generateArray2() {
 
 
 //Clock and Reset input detection
-void deReset() {
+void deReset() 
+{
   resetState = false;
-  if(!(resetIn)) {resetJump = true;}
-  if(resetJump) {
-    if(resetIn) {
+  if(!(resetIn)) 
+  {
+    resetJump = true;
+  }
+
+  if(resetJump) 
+  {
+    if(resetIn) 
+    {
       reset_bounce_counter++;
-    } else {
+    }
+    else 
+    {
       reset_bounce_counter = 0;
     }
-    if(unbounce == reset_bounce_counter) {
+
+    if(unbounce == reset_bounce_counter) 
+    {
       resetState = true;
       resetJump = false;
     }
@@ -59,16 +70,28 @@ void deReset() {
 }
 
 
-void deClock() {
+void deClock() 
+{
   clockState = false;
-  if(!(clockIn)) {clockJump = true;}
-  if(clockJump) {
-    if(clockIn) {
+  
+  if(!(clockIn)) 
+  {
+    clockJump = true;
+  }
+
+  if(clockJump) 
+  {
+    if(clockIn) 
+    {
       clock_bounce_counter++;
-    } else {
+    } 
+    else 
+    {
       clock_bounce_counter = 0;
     }
-    if(unbounce == clock_bounce_counter) {
+
+    if(unbounce == clock_bounce_counter) 
+    {
       clockState = true;
       clockJump = false;
     }

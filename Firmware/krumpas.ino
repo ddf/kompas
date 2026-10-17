@@ -1,24 +1,25 @@
 /*
- * Firmware for stziopa/bastl-instruments Kompas
+ * Alternate firmware for stziopa/bastl-instruments Kompas
  * licensed under CC-BY-SA by Stefano Manconi 02-09-2019
+ * and Damien Quartz 17-10-2026.
  */
 
 /*
- * KOMPAS
+ * KRUMPAS
  *
  *this tool is 
  *the outcome 
- *of the environment 
- *we are in and 
- *is inspired by a 
- *non-linear approach 
- *to music and life - 
- *don't build any 
- *expectations choose 
- *your direction and 
- *discover new paths
+ *of wishing kompas
+ *could be just
+ *a little bit
+ *more predictable
+ *while retaining
+ *the feeling
+ *of navigating
+ *a shifting
+ *landscape
  *
-*/
+ */
 
 //NAVIGATION BEGINS:......
 #include <EEPROM.h>
@@ -27,11 +28,13 @@
 #include "variables.h"
 #include "data.h"
 
-void setup() {
+void setup() 
+{
   Serial.begin(9600);
   bootMode = false;
   //check for the first startup
-  if(!isEEPROMvalid()){
+  if(!isEEPROMvalid())
+  {
     formatFactory();
     delay(100);
   }
@@ -60,7 +63,8 @@ void setup() {
   randomSeed(analogRead(A5));
 
   //BOOTMODE (close jumper in between PB0 and GND before startup)
-  if(!bootPin) {
+  if(!bootPin) 
+  {
     bootMode = true;
     loadPreset();
     
@@ -71,31 +75,38 @@ void setup() {
     prevPot1 = pot1;
     prevPot2 = pot2;
     
-  } else {
+  } 
+  else 
+  {
     bootMode = false;
     loadPreset();
   }
 
-  while(bootMode) {
+  while(bootMode) 
+  {
     pot0 = analogRead(A3);
     pot1 = analogRead(A4);
     pot2 = analogRead(A5);
 
-    if(pot0 > (prevPot0 + 9) || pot0 < (prevPot0 - 9)) {
+    if(pot0 > (prevPot0 + 9) || pot0 < (prevPot0 - 9)) 
+    {
       prevPot0 = pot0;
       EEPROM.update(addr, 0x0);
     }
-    if(pot1 > (prevPot1 + 9) || pot1 < (prevPot1 - 9)) {
+    if(pot1 > (prevPot1 + 9) || pot1 < (prevPot1 - 9)) 
+    {
       prevPot1 = pot1;
       EEPROM.update(addr, 0x1);
     }
-    if(pot2 > (prevPot2 + 9) || pot2 < (prevPot2 - 9)) {
+    if(pot2 > (prevPot2 + 9) || pot2 < (prevPot2 - 9)) 
+    {
       prevPot2 = pot2;
       EEPROM.update(addr, 0x2);
     }
 
-  loadPreset();
-  switch(trigPreset) {
+    loadPreset();
+    switch(trigPreset) 
+    {
       case 0:
         PORTB=B00000001;
         PINB|=B00001000;
@@ -108,7 +119,7 @@ void setup() {
         PORTB=B00000001;
         PINB|=B00000010;
         break;
-  } 
+    } 
   //delay(100);
   //Serial.println(bootMode);  
   }
@@ -266,7 +277,7 @@ void loop()
     digitalWrite(clock_led, LOW);
   }
 
-  // LONGITUDE randomarray over euclidean
+  // LONGITUDE - kick
   if(prob0 > (prevProb0 + 2) || prob0 < (prevProb0 - 2)) 
   {
     prevProb0 = prob0;   
@@ -314,99 +325,109 @@ void loop()
     }                  
   }    
  
- 
-  // LATITUDE pseudo-random array
-    if(prob2 > (prevProb2 + 2) || prob2 < (prevProb2 - 2)) {
-      prevProb2 = prob2;     
+  // LATITUDE - hat / perc
+  if(prob2 > (prevProb2 + 2) || prob2 < (prevProb2 - 2)) 
+  {
+    prevProb2 = prob2;     
 
-        if(prob2 > 2) {
-         if(prob2 < 1011) {
-         generate2 = true;
-                  
-        for(int i=0; i < length2; i++) {
-          if(randomArray2[i] < (prob2)) {
-              patternArray2[i] = 1;
-            } else {
-              patternArray2[i] = 0;
-            }
-          }
-
-          //makes sure at least one step will be filled
-          int rnd2 = random(length2);
-          patternArray2[rnd2] = 1;
+    if(prob2 > 2) 
+    {
+      if(prob2 < 1011) 
+      {
+        generate2 = true;
          
-         }
-         
-      } else {
-          for(int i=0; i < length2; i++) {
-          patternArray2[i] = 0;   
-          }
-          prevProb2 = 0;
+        size_t c = kPatternLength;
+        size_t d = kPatternCount - 1;
+        size_t e = 1011;
+        size_t p = (prob2*d/e)*c; 
+        size_t f = (prob2*d)%e;
+        int* dA = data2 + p;
+        int* dB = data2 + p + c;
+        for(int i = 0; i < length2; i++) 
+        {
+          size_t a = dA[i], b = dB[i];
+          size_t x = ((e-f)*a)/e, y = (f*b)/e;
+          patternArray2[i] = randomArray2[i] < (x+y);
         }
-
-         if(pot2 > 1011) {
-        for(int i=0; i < length2; i++) {
-          patternArray2[i] = 1;   
-          }         
       }
+    } 
+    else 
+    {
+      for(int i=0; i < length2; i++) 
+      {
+          patternArray2[i] = 0;   
+      }
+      prevProb2 = 0;
+    }
 
+    if(pot2 > 1011) 
+    {
+      for(int i=0; i < length2; i++)
+      {
+        patternArray2[i] = 1;   
+      }         
+    }
   }
 
+  // ALTITUDE - snare
+  if(prob1 > (prevProb1 + 2) || prob1 < (prevProb1 - 2)) 
+  {
+    prevProb1 = prob1;
 
-  // ALTITUDE if Long == Lat - it makes a pattern based on matching steps
-    if(prob1 > (prevProb1 + 2) || prob1 < (prevProb1 - 2)) {
-      prevProb1 = prob1;
-
-       if(prob1 > 2) {
-       if(prob1 < 1011) { 
+    if(prob1 > 2) 
+    {
+      if(prob1 < 1011) 
+      { 
         generate1 = true;
                
-        for(int i=0; i < length1; i++) {
-            if(patternArray0[i] == patternArray2[i]) {
-              if(randomArray1[i] < prob1) {
-                patternArray1[i] = 1;
-              } else {
-                patternArray1[i] = 0;
-              }
-            } else patternArray1[i] = 0;
-          }
-
-        for(int i=0; i < length1; i++) {
-            if(patternArray0[i] == patternArray2[i]) {
-                patternArray1[i] = 1;
-                i = length1;
-              }
-            }
-
+        size_t c = kPatternLength;
+        size_t d = kPatternCount - 1;
+        size_t e = 1011;
+        size_t p = (prob1*d/e)*c; 
+        size_t f = (prob1*d)%e;
+        int* dA = data1 + p;
+        int* dB = data1 + p + c;
+        for(int i = 0; i < length1; i++) 
+        {
+          size_t a = dA[i], b = dB[i];
+          size_t x = ((e-f)*a)/e, y = (f*b)/e;
+          patternArray1[i] = randomArray1[i] < (x+y);
         } 
-        
-       } else {
-          for(int i=0; i < length1; i++) {
-            patternArray1[i] = 0;
-          }
-        }
+      } 
 
-         if(pot1 > 1011) {
-        for(int i=0; i < length1; i++) {
+      if(pot1 > 1011) 
+      {
+        for(int i=0; i < length1; i++) 
+        {
           patternArray1[i] = 1;   
-          }         
+        }         
       }
-}
-  
+    }
+    else 
+    {
+      for(int i=0; i < length1; i++) 
+      {
+        patternArray1[i] = 0;
+      }
+    }
+  }
 
   //turn off reset LED 
-  if(millis() >= lastReset + trigLength) {
+  if(millis() >= lastReset + trigLength) 
+  {
     digitalWrite(reset_led, LOW);
   }
   //turn off coordinate LEDs
-  if(millis() >= lastGenerate0 + trigLength) {
-  digitalWrite(led0, LOW);
+  if(millis() >= lastGenerate0 + trigLength) 
+  {
+    digitalWrite(led0, LOW);
   }  
-  if(millis() >= lastGenerate1 + trigLength) {
+  if(millis() >= lastGenerate1 + trigLength) 
+  {
     digitalWrite(led1, LOW);
   }
-  if(millis() >= lastGenerate2 + trigLength) {
+  if(millis() >= lastGenerate2 + trigLength) 
+  {
     digitalWrite(led2, LOW);
   }
-
 }
