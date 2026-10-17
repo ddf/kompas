@@ -2,10 +2,13 @@
 //Longitude
 void generateArray0() {
   if(generate0) {
+    // Serial.println("generate0:");
     for(int i=0; i<length0; i++) {
-      randomArray0[i] = random(1011);
-      //Serial.print(randomArray0[i]);     
-    }  
+      randomArray0[i] = random(T-1);
+      // Serial.print(randomArray0[i]);
+      // Serial.print(" ");     
+    }
+    Serial.println("");
     lastGenerate0 = millis();
     digitalWrite(led0, HIGH);  
     generate0 = false;

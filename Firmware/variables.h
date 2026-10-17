@@ -1,19 +1,20 @@
 #ifndef _VARIABLES_H_
 #define _VARIABLES_H_
 
+#include "data.h"
 
 //pattern lengths (Longitude, Altitude, Latitude)
-int length0 = 32;
-int length1 = 32;
-int length2 = 32;
+int length0 = kPatternLength;
+int length1 = kPatternLength;
+int length2 = kPatternLength;
 
-bool patternArray0[32];
-bool patternArray1[32];
-bool patternArray2[32];
+bool patternArray0[kPatternLength];
+bool patternArray1[kPatternLength];
+bool patternArray2[kPatternLength];
 
-int randomArray0[32];
-int randomArray1[32];
-int randomArray2[32];
+int randomArray0[kPatternLength];
+int randomArray1[kPatternLength];
+int randomArray2[kPatternLength];
 
 //cv values
 int cv0 = 0;
