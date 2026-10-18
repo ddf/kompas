@@ -212,7 +212,7 @@ void loop()
     else 
     { 
       stepValue0 = 0;
-      stepValue0 = random(T-1) < patternArray0[pos0];
+      stepValue0 = random(F) < patternArray0[pos0];
     }
 
     if(cv1 > 1011)
@@ -224,7 +224,7 @@ void loop()
     else
     { 
       stepValue1 = 0;
-      stepValue1 = random(T-1) < patternArray1[pos1];
+      stepValue1 = random(F) < patternArray1[pos1];
     }
 
     if(cv2 > 1011)
@@ -236,7 +236,7 @@ void loop()
     else 
     { 
       stepValue2 = 0;
-      stepValue2 = random(T-1) < patternArray2[pos2];
+      stepValue2 = random(F) < patternArray2[pos2];
     }
 
 
