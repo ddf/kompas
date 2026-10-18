@@ -8,9 +8,9 @@ int length0 = kPatternLength;
 int length1 = kPatternLength;
 int length2 = kPatternLength;
 
-bool patternArray0[kPatternLength];
-bool patternArray1[kPatternLength];
-bool patternArray2[kPatternLength];
+int patternArray0[kPatternLength];
+int patternArray1[kPatternLength];
+int patternArray2[kPatternLength];
 
 int randomArray0[kPatternLength];
 int randomArray1[kPatternLength];

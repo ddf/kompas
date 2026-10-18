@@ -212,7 +212,7 @@ void loop()
     else 
     { 
       stepValue0 = 0;
-      stepValue0 = patternArray0[pos0];
+      stepValue0 = random(T-1) < patternArray0[pos0];
     }
 
     if(cv1 > 1011)
@@ -224,7 +224,7 @@ void loop()
     else
     { 
       stepValue1 = 0;
-      stepValue1 = patternArray1[pos1];
+      stepValue1 = random(T-1) < patternArray1[pos1];
     }
 
     if(cv2 > 1011)
@@ -236,7 +236,7 @@ void loop()
     else 
     { 
       stepValue2 = 0;
-      stepValue2 = patternArray2[pos2];
+      stepValue2 = random(T-1) < patternArray2[pos2];
     }
 
 
@@ -301,7 +301,7 @@ void loop()
           size_t x = ((e-f)*a)/e, y = (f*b)/e;
           // Serial.print("{"); Serial.print(a); Serial.print(","); Serial.print(b); Serial.print(","); Serial.print(x); Serial.print(","); Serial.print(y); Serial.print("} ");
           // Serial.print(x+y); Serial.print(":");
-          patternArray0[i] = randomArray0[i] < (x+y);
+          patternArray0[i] = (x+y);
           // Serial.print(patternArray0[i]);
           // Serial.print(" ");
         }
@@ -320,7 +320,7 @@ void loop()
     {
       for(int i = 0; i < length0; i++)
       {
-        patternArray0[i] = 1;   
+        patternArray0[i] = T;   
       }         
     }                  
   }    
@@ -347,7 +347,7 @@ void loop()
         {
           size_t a = dA[i], b = dB[i];
           size_t x = ((e-f)*a)/e, y = (f*b)/e;
-          patternArray2[i] = randomArray2[i] < (x+y);
+          patternArray2[i] = (x+y);
         }
       }
     } 
@@ -364,7 +364,7 @@ void loop()
     {
       for(int i=0; i < length2; i++)
       {
-        patternArray2[i] = 1;   
+        patternArray2[i] = T;   
       }         
     }
   }
@@ -391,7 +391,7 @@ void loop()
         {
           size_t a = dA[i], b = dB[i];
           size_t x = ((e-f)*a)/e, y = (f*b)/e;
-          patternArray1[i] = randomArray1[i] < (x+y);
+          patternArray1[i] = (x+y);
         } 
       } 
 
@@ -399,7 +399,7 @@ void loop()
       {
         for(int i=0; i < length1; i++) 
         {
-          patternArray1[i] = 1;   
+          patternArray1[i] = T;   
         }         
       }
     }
